@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SignSpeak - Speech/Text to Sign Language</title>
+    <meta name="description"
+        content="Convert speech or text into sign language videos and images supporting ASL and ISL">
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-content">
+                <h1 class="app-title">
+                    <span class="icon">🤟</span>
+                    SignSpeak
+                </h1>
+                <p class="app-subtitle">Transform Your Words into Sign Language</p>
+                <button id="aboutBtn" class="btn-about" title="About this project">ℹ️ About</button>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Input Section -->
+            <section class="input-section card">
+                <h2 class="section-title">Input</h2>
+
+                <div class="input-controls">
+                    <textarea id="textInput" class="text-input"
+                        placeholder="Type your message here or use the microphone..." rows="4"></textarea>
+
+                    <div class="control-buttons">
+                        <button id="micBtn" class="btn btn-mic" title="Start voice input">
+                            <span class="mic-icon">🎤</span>
+                            <span class="btn-text">Voice Input</span>
+                        </button>
+
+                        <button id="translateBtn" class="btn btn-primary">
+                            <span class="btn-text">Translate to Signs</span>
+                            <span class="btn-icon">→</span>
+                        </button>
+
+                        <button id="clearBtn" class="btn btn-secondary">
+                            <span class="btn-text">Clear</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Speech Recognition Status -->
+                <div id="speechStatus" class="speech-status hidden">
+                    <div class="status-indicator pulsing"></div>
+                    <span class="status-text">Listening...</span>
+                </div>
+            </section>
+
+            <!-- Output Section -->
+            <section class="output-section card">
+                <div class="output-header">
+                    <h2 class="section-title">Sign Language Output</h2>
+
+                    <div class="controls-group">
+                        <!-- Language Toggle -->
+                        <div class="language-selector">
+                            <button class="toggle-btn active" data-lang="asl" title="American Sign Language">
+                                🇺🇸 ASL
+                            </button>
+                            <button class="toggle-btn" data-lang="isl" title="Indian Sign Language">
+                                🇮🇳 ISL
+                            </button>
+                        </div>
+
+                        <!-- Mode Toggle -->
+                        <div class="output-mode-selector">
+                            <button class="mode-btn" data-mode="gallery">
+                                <span>🖼️</span> Gallery
+                            </button>
+                            <button class="mode-btn active" data-mode="video">
+                                <span>🎬</span> Video
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Output Display Area -->
+                <div id="outputDisplay" class="output-display">
+                    <div class="placeholder">
+                        <div class="placeholder-icon">✋</div>
+                        <p class="placeholder-text">Your sign language translation will appear here</p>
+                        <p class="placeholder-hint">Enter text or use voice input, then click "Translate to Signs"</p>
+                    </div>
+                </div>
+
+                <!-- Image Gallery View -->
+                <div id="galleryView" class="gallery-view hidden">
+                    <div class="gallery-grid" id="galleryGrid">
+                        <!-- Dynamic sign images will be inserted here -->
+                    </div>
+                </div>
+
+                <!-- Video Player View -->
+                <div id="videoView" class="video-view hidden">
+                    <div class="video-container">
+                        <video id="signVideo" class="sign-video" controls>
+                            <source src="" type="video/mp4">
+                            Your browser does not support the video tag.
+                        </video>
+                    </div>
+
+                    <div class="video-controls">
+                        <button id="playBtn" class="control-btn">
+                            <span>▶️</span> Play
+                        </button>
+                        <button id="pauseBtn" class="control-btn">
+                            <span>⏸️</span> Pause
+                        </button>
+                        <div class="speed-control">
+                            <label for="speedSlider">Speed:</label>
+                            <input type="range" id="speedSlider" min="0.5" max="2" step="0.25" value="1">
+                            <span id="speedValue">1x</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Progress/Status Bar -->
+            <div id="statusBar" class="status-bar hidden">
+                <div class="status-content">
+                    <span id="statusText">Processing...</span>
+                    <div class="progress-bar">
+                        <div id="progressFill" class="progress-fill"></div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p id="currentLanguage">American Sign Language (ASL)</p>
+        </footer>
+    </div>
+
+    <!-- About Modal -->
+    <div id="aboutModal" class="modal hidden">
+        <div class="modal-content">
+            <span class="modal-close">&times;</span>
+            <h2 class="modal-title">About SignSpeak</h2>
+
+            <div class="modal-body">
+                <p class="modal-intro">
+                    <strong>SignSpeak</strong> is a bilingual sign language translator that converts speech and text
+                    into sign language animations and videos.
+                </p>
+
+                <h3>✨ Features</h3>
+                <ul class="feature-list">
+                    <li>🎤 <strong>Voice Input:</strong> Speak naturally and convert to sign language</li>
+                    <li>⌨️ <strong>Text Input:</strong> Type in English or Hindi</li>
+                    <li>🇺🇸 <strong>ASL Support:</strong> American Sign Language with alphabet images</li>
+                    <li>🇮🇳 <strong>ISL Support:</strong> Indian Sign Language with Hindi phrase recognition</li>
+                    <li>🖼️ <strong>Gallery Mode:</strong> View signs as image cards</li>
+                    <li>🎬 <strong>Video Mode:</strong> Watch sign language videos</li>
+                    <li>📝 <strong>Fingerspelling:</strong> Automatic letter-by-letter spelling for unknown words</li>
+                </ul>
+
+                <h3>🌐 Supported Languages</h3>
+                <ul class="language-list">
+                    <li><strong>English:</strong> Full alphabet, common words, and phrases</li>
+                    <li><strong>Hindi:</strong> 20+ common phrases (namaste, shukriya, etc.)</li>
+                </ul>
+
+                <h3>📚 How to Use</h3>
+                <ol class="usage-list">
+                    <li>Select your preferred sign language (ASL or ISL)</li>
+                    <li>Enter text by typing or using voice input</li>
+                    <li>Click "Translate to Signs"</li>
+                    <li>Choose Gallery or Video mode to view the translation</li>
+                </ol>
+
+                <h3>🎯 Technology</h3>
+                <p class="tech-stack">
+                    Built with vanilla JavaScript, HTML5, and CSS3. Features speech recognition,
+                    text processing, and multimedia playback capabilities.
+                </p>
+
+                <div class="modal-footer">
+                    <p>💙 Made with passion for accessibility and inclusion</p>
+                    <p class="version">Version 1.0</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script type="module" src="js/app.js"></script>
+</body>
+
+</html>

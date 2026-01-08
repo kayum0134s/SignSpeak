@@ -1,0 +1,72 @@
+# ============================================================================
+# SignSpeak - Sign Language Translator
+# Requirements to Run This Project
+# ============================================================================
+
+# ----------------------------------------------------------------------------
+# SYSTEM REQUIREMENTS
+# ----------------------------------------------------------------------------
+# Python Version: 3.8 or higher (recommended: Python 3.11+)
+# Operating System: Windows, macOS, or Linux
+# Browser: Modern web browser (Chrome, Firefox, Edge, Safari)
+# Internet: Required for initial setup and web browser access
+
+# ----------------------------------------------------------------------------
+# PYTHON DEPENDENCIES
+# ----------------------------------------------------------------------------
+
+# Computer Vision - for video processing and thumbnail extraction
+# Used in: convert_videos_to_images.py
+opencv-python>=4.8.0
+
+# ----------------------------------------------------------------------------
+# BUILT-IN PYTHON MODULES (No installation needed)
+# ----------------------------------------------------------------------------
+# The following modules are part of Python's standard library:
+# - http.server (for local web server)
+# - socketserver (for server functionality)
+# - os, pathlib (for file system operations)
+# - webbrowser (for auto-opening browser)
+# - zipfile, shutil (for dataset extraction and organization)
+# - json (for sign mapping configuration)
+# - collections (for data structures)
+
+# ----------------------------------------------------------------------------
+# INSTALLATION INSTRUCTIONS
+# ----------------------------------------------------------------------------
+# 1. Install Python 3.8+ from https://www.python.org/downloads/
+# 2. Install dependencies:
+#    pip install -r requirements.txt
+# 3. Run the server:
+#    python server.py
+# 4. Open browser at: http://localhost:8000
+
+# ----------------------------------------------------------------------------
+# OPTIONAL TOOLS (for dataset management)
+# ----------------------------------------------------------------------------
+# These scripts are optional and only needed if you want to:
+# - Extract ASL datasets: python extract_asl.py
+# - Organize video files: python organize_videos.py
+# - Convert videos to images: python convert_videos_to_images.py
+# - Setup Kaggle datasets: python setup_kaggle_dataset.py
+
+# ----------------------------------------------------------------------------
+# BROWSER REQUIREMENTS
+# ----------------------------------------------------------------------------
+# - JavaScript enabled
+# - Support for HTML5 video playback
+# - Support for Web Speech API (for speech recognition feature)
+# - LocalStorage support (for saving preferences)
+
+# ----------------------------------------------------------------------------
+# HARDWARE REQUIREMENTS
+# ----------------------------------------------------------------------------
+# Minimum:
+# - CPU: Dual-core processor
+# - RAM: 2GB
+# - Storage: 500MB (more if using large datasets)
+# 
+# Recommended:
+# - CPU: Quad-core processor or better
+# - RAM: 4GB or more
+# - Storage: 2GB+ (for video datasets)

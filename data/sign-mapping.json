@@ -1,0 +1,586 @@
+{
+  "asl": {
+    "a": {
+      "type": "image",
+      "path": "media/signs/asl/alphabet/a.jpg",
+      "generated": false
+    },
+    "b": {
+      "type": "image",
+      "path": "media/signs/asl/alphabet/b.jpg",
+      "generated": false
+    },
+    "c": {
+      "type": "image",
+      "path": "media/signs/asl/alphabet/c.jpg",
+      "generated": false
+    },
+    "d": {
+      "type": "image",
+      "path": "media/signs/asl/alphabet/d.jpg",
+      "generated": false
+    },
+    "e": {
+      "type": "image",
+      "path": "media/signs/asl/alphabet/e.jpg",
+      "generated": false
+    },
+    "f": {
+      "type": "image",
+      "path": "media/signs/asl/alphabet/f.jpg",
+      "generated": false
+    },
+    "g": {
+      "type": "image",
+      "path": "media/signs/asl/alphabet/g.jpg",
+      "generated": false
+    },
+    "h": {
+      "type": "image",
+      "path": "media/signs/asl/alphabet/h.jpg",
+      "generated": false
+    },
+    "i": {
+      "type": "image",
+      "path": "media/signs/asl/alphabet/i.jpg",
+      "generated": false
+    },
+    "j": {
+      "type": "image",
+      "path": "media/signs/asl/alphabet/j.jpg",
+      "generated": false
+    },
+    "k": {
+      "type": "image",
+      "path": "media/signs/asl/alphabet/k.jpg",
+      "generated": false
+    },
+    "l": {
+      "type": "image",
+      "path": "media/signs/asl/alphabet/l.jpg",
+      "generated": false
+    },
+    "m": {
+      "type": "image",
+      "path": "media/signs/asl/alphabet/m.jpg",
+      "generated": false
+    },
+    "n": {
+      "type": "image",
+      "path": "media/signs/asl/alphabet/n.jpg",
+      "generated": false
+    },
+    "o": {
+      "type": "image",
+      "path": "media/signs/asl/alphabet/o.jpg",
+      "generated": false
+    },
+    "p": {
+      "type": "image",
+      "path": "media/signs/asl/alphabet/p.jpg",
+      "generated": false
+    },
+    "q": {
+      "type": "image",
+      "path": "media/signs/asl/alphabet/q.jpg",
+      "generated": false
+    },
+    "r": {
+      "type": "image",
+      "path": "media/signs/asl/alphabet/r.jpg",
+      "generated": false
+    },
+    "s": {
+      "type": "image",
+      "path": "media/signs/asl/alphabet/s.jpg",
+      "generated": false
+    },
+    "t": {
+      "type": "image",
+      "path": "media/signs/asl/alphabet/t.jpg",
+      "generated": false
+    },
+    "u": {
+      "type": "image",
+      "path": "media/signs/asl/alphabet/u.jpg",
+      "generated": false
+    },
+    "v": {
+      "type": "image",
+      "path": "media/signs/asl/alphabet/v.jpg",
+      "generated": false
+    },
+    "w": {
+      "type": "image",
+      "path": "media/signs/asl/alphabet/w.jpg",
+      "generated": false
+    },
+    "x": {
+      "type": "image",
+      "path": "media/signs/asl/alphabet/x.jpg",
+      "generated": false
+    },
+    "y": {
+      "type": "image",
+      "path": "media/signs/asl/alphabet/y.jpg",
+      "generated": false
+    },
+    "z": {
+      "type": "image",
+      "path": "media/signs/asl/alphabet/z.jpg",
+      "generated": false
+    },
+    "hello": {
+      "type": "image",
+      "path": "media/signs/asl/common/hello.png",
+      "generated": true
+    },
+    "goodbye": {
+      "type": "image",
+      "path": "media/signs/asl/common/goodbye.png",
+      "generated": true
+    },
+    "please": {
+      "type": "image",
+      "path": "media/signs/asl/common/please.png",
+      "generated": true
+    },
+    "yes": {
+      "type": "image",
+      "path": "media/signs/asl/common/yes.png",
+      "generated": true
+    },
+    "no": {
+      "type": "image",
+      "path": "media/signs/asl/common/no.png",
+      "generated": true
+    },
+    "sorry": {
+      "type": "image",
+      "path": "media/signs/asl/common/sorry.png",
+      "generated": true
+    },
+    "help": {
+      "type": "image",
+      "path": "media/signs/asl/common/help.png",
+      "generated": true
+    },
+    "love": {
+      "type": "image",
+      "path": "media/signs/asl/common/love.png",
+      "generated": true
+    },
+    "water": {
+      "type": "image",
+      "path": "media/signs/asl/common/water.png",
+      "generated": true
+    },
+    "eat": {
+      "type": "image",
+      "path": "media/signs/asl/common/eat.png",
+      "generated": true
+    },
+    "drink": {
+      "type": "image",
+      "path": "media/signs/asl/common/drink.png",
+      "generated": true
+    },
+    "thank you": {
+      "type": "image",
+      "path": "media/signs/asl/phrases/thank_you.png",
+      "generated": true
+    },
+    "nice to meet you": {
+      "type": "image",
+      "path": "media/signs/asl/phrases/nice_to_meet_you.png",
+      "generated": true
+    },
+    "my name is": {
+      "type": "image",
+      "path": "media/signs/asl/phrases/my_name_is.png",
+      "generated": true
+    },
+    "good afternoon": {
+      "type": "image",
+      "path": "media/signs/asl/phrases/good_afternoon.png",
+      "generated": true
+    },
+    "good night": {
+      "type": "image",
+      "path": "media/signs/asl/phrases/good_night.png",
+      "generated": true
+    },
+    "see you later": {
+      "type": "image",
+      "path": "media/signs/asl/phrases/see_you_later.png",
+      "generated": true
+    },
+    "excuse me": {
+      "type": "image",
+      "path": "media/signs/asl/phrases/excuse_me.png",
+      "generated": true
+    },
+    "you're welcome": {
+      "type": "image",
+      "path": "media/signs/asl/phrases/you_are_welcome.png",
+      "generated": true
+    },
+    "good morning": {
+      "type": "video",
+      "path": "media/signs/asl/phrases/Good morning.mp4",
+      "generated": false
+    },
+    "good evening": {
+      "type": "video",
+      "path": "media/signs/asl/phrases/Good Evening.mp4",
+      "generated": false
+    },
+    "how are you": {
+      "type": "video",
+      "path": "media/signs/asl/phrases/How are you.mp4",
+      "generated": false
+    },
+    "what is your name": {
+      "type": "video",
+      "path": "media/signs/asl/phrases/what is your name.mp4",
+      "generated": false
+    },
+    "what are you doing": {
+      "type": "video",
+      "path": "media/signs/asl/phrases/What are you doing.mp4",
+      "generated": false
+    },
+    "have a good day": {
+      "type": "video",
+      "path": "media/signs/asl/phrases/Have a good day.mp4",
+      "generated": false
+    },
+    "monday": {
+      "type": "video",
+      "path": "media/signs/asl/phrases/Monday.mp4",
+      "generated": false
+    },
+    "tuesday": {
+      "type": "video",
+      "path": "media/signs/asl/phrases/Tuesday.mp4",
+      "generated": false
+    },
+    "wednesday": {
+      "type": "video",
+      "path": "media/signs/asl/phrases/Wednesday.mp4",
+      "generated": false
+    },
+    "thursday": {
+      "type": "video",
+      "path": "media/signs/asl/phrases/Thursday.mp4",
+      "generated": false
+    },
+    "friday": {
+      "type": "video",
+      "path": "media/signs/asl/phrases/Friday.mp4",
+      "generated": false
+    },
+    "saturday": {
+      "type": "video",
+      "path": "media/signs/asl/phrases/Saturday.mp4",
+      "generated": false
+    },
+    "sunday": {
+      "type": "video",
+      "path": "media/signs/asl/phrases/Sunday.mp4",
+      "generated": false
+    }
+  },
+  "isl": {
+    "a": {
+      "type": "image",
+      "path": "media/signs/asl/alphabet/a.jpg",
+      "generated": false
+    },
+    "b": {
+      "type": "image",
+      "path": "media/signs/asl/alphabet/b.jpg",
+      "generated": false
+    },
+    "c": {
+      "type": "image",
+      "path": "media/signs/asl/alphabet/c.jpg",
+      "generated": false
+    },
+    "d": {
+      "type": "image",
+      "path": "media/signs/asl/alphabet/d.jpg",
+      "generated": false
+    },
+    "e": {
+      "type": "image",
+      "path": "media/signs/asl/alphabet/e.jpg",
+      "generated": false
+    },
+    "f": {
+      "type": "image",
+      "path": "media/signs/asl/alphabet/f.jpg",
+      "generated": false
+    },
+    "g": {
+      "type": "image",
+      "path": "media/signs/asl/alphabet/g.jpg",
+      "generated": false
+    },
+    "h": {
+      "type": "image",
+      "path": "media/signs/asl/alphabet/h.jpg",
+      "generated": false
+    },
+    "i": {
+      "type": "image",
+      "path": "media/signs/asl/alphabet/i.jpg",
+      "generated": false
+    },
+    "j": {
+      "type": "image",
+      "path": "media/signs/asl/alphabet/j.jpg",
+      "generated": false
+    },
+    "k": {
+      "type": "image",
+      "path": "media/signs/asl/alphabet/k.jpg",
+      "generated": false
+    },
+    "l": {
+      "type": "image",
+      "path": "media/signs/asl/alphabet/l.jpg",
+      "generated": false
+    },
+    "m": {
+      "type": "image",
+      "path": "media/signs/asl/alphabet/m.jpg",
+      "generated": false
+    },
+    "n": {
+      "type": "image",
+      "path": "media/signs/asl/alphabet/n.jpg",
+      "generated": false
+    },
+    "o": {
+      "type": "image",
+      "path": "media/signs/asl/alphabet/o.jpg",
+      "generated": false
+    },
+    "p": {
+      "type": "image",
+      "path": "media/signs/asl/alphabet/p.jpg",
+      "generated": false
+    },
+    "q": {
+      "type": "image",
+      "path": "media/signs/asl/alphabet/q.jpg",
+      "generated": false
+    },
+    "r": {
+      "type": "image",
+      "path": "media/signs/asl/alphabet/r.jpg",
+      "generated": false
+    },
+    "s": {
+      "type": "image",
+      "path": "media/signs/asl/alphabet/s.jpg",
+      "generated": false
+    },
+    "t": {
+      "type": "image",
+      "path": "media/signs/asl/alphabet/t.jpg",
+      "generated": false
+    },
+    "u": {
+      "type": "image",
+      "path": "media/signs/asl/alphabet/u.jpg",
+      "generated": false
+    },
+    "v": {
+      "type": "image",
+      "path": "media/signs/asl/alphabet/v.jpg",
+      "generated": false
+    },
+    "w": {
+      "type": "image",
+      "path": "media/signs/asl/alphabet/w.jpg",
+      "generated": false
+    },
+    "x": {
+      "type": "image",
+      "path": "media/signs/asl/alphabet/x.jpg",
+      "generated": false
+    },
+    "y": {
+      "type": "image",
+      "path": "media/signs/asl/alphabet/y.jpg",
+      "generated": false
+    },
+    "z": {
+      "type": "image",
+      "path": "media/signs/asl/alphabet/z.jpg",
+      "generated": false
+    },
+    "hello": {
+      "type": "image",
+      "path": "media/signs/asl/common/hello.png",
+      "generated": true
+    },
+    "goodbye": {
+      "type": "image",
+      "path": "media/signs/asl/common/goodbye.png",
+      "generated": true
+    },
+    "please": {
+      "type": "image",
+      "path": "media/signs/asl/common/please.png",
+      "generated": true
+    },
+    "yes": {
+      "type": "image",
+      "path": "media/signs/asl/common/yes.png",
+      "generated": true
+    },
+    "no": {
+      "type": "image",
+      "path": "media/signs/asl/common/no.png",
+      "generated": true
+    },
+    "sorry": {
+      "type": "image",
+      "path": "media/signs/asl/common/sorry.png",
+      "generated": true
+    },
+    "help": {
+      "type": "image",
+      "path": "media/signs/asl/common/help.png",
+      "generated": true
+    },
+    "love": {
+      "type": "image",
+      "path": "media/signs/asl/common/love.png",
+      "generated": true
+    },
+    "water": {
+      "type": "image",
+      "path": "media/signs/asl/common/water.png",
+      "generated": true
+    },
+    "eat": {
+      "type": "image",
+      "path": "media/signs/asl/common/eat.png",
+      "generated": true
+    },
+    "drink": {
+      "type": "image",
+      "path": "media/signs/asl/common/drink.png",
+      "generated": true
+    },
+    "thank you": {
+      "type": "image",
+      "path": "media/signs/asl/phrases/thank_you.png",
+      "generated": true
+    },
+    "nice to meet you": {
+      "type": "image",
+      "path": "media/signs/asl/phrases/nice_to_meet_you.png",
+      "generated": true
+    },
+    "my name is": {
+      "type": "image",
+      "path": "media/signs/asl/phrases/my_name_is.png",
+      "generated": true
+    },
+    "good afternoon": {
+      "type": "image",
+      "path": "media/signs/asl/phrases/good_afternoon.png",
+      "generated": true
+    },
+    "good night": {
+      "type": "image",
+      "path": "media/signs/asl/phrases/good_night.png",
+      "generated": true
+    },
+    "see you later": {
+      "type": "image",
+      "path": "media/signs/asl/phrases/see_you_later.png",
+      "generated": true
+    },
+    "excuse me": {
+      "type": "image",
+      "path": "media/signs/asl/phrases/excuse_me.png",
+      "generated": true
+    },
+    "you're welcome": {
+      "type": "image",
+      "path": "media/signs/asl/phrases/you_are_welcome.png",
+      "generated": true
+    },
+    "good morning": {
+      "type": "video",
+      "path": "media/signs/asl/phrases/Good morning.mp4",
+      "generated": false
+    },
+    "good evening": {
+      "type": "video",
+      "path": "media/signs/asl/phrases/Good Evening.mp4",
+      "generated": false
+    },
+    "how are you": {
+      "type": "video",
+      "path": "media/signs/asl/phrases/How are you.mp4",
+      "generated": false
+    },
+    "what is your name": {
+      "type": "video",
+      "path": "media/signs/asl/phrases/what is your name.mp4",
+      "generated": false
+    },
+    "what are you doing": {
+      "type": "video",
+      "path": "media/signs/asl/phrases/What are you doing.mp4",
+      "generated": false
+    },
+    "have a good day": {
+      "type": "video",
+      "path": "media/signs/asl/phrases/Have a good day.mp4",
+      "generated": false
+    },
+    "monday": {
+      "type": "video",
+      "path": "media/signs/asl/phrases/Monday.mp4",
+      "generated": false
+    },
+    "tuesday": {
+      "type": "video",
+      "path": "media/signs/asl/phrases/Tuesday.mp4",
+      "generated": false
+    },
+    "wednesday": {
+      "type": "video",
+      "path": "media/signs/asl/phrases/Wednesday.mp4",
+      "generated": false
+    },
+    "thursday": {
+      "type": "video",
+      "path": "media/signs/asl/phrases/Thursday.mp4",
+      "generated": false
+    },
+    "friday": {
+      "type": "video",
+      "path": "media/signs/asl/phrases/Friday.mp4",
+      "generated": false
+    },
+    "saturday": {
+      "type": "video",
+      "path": "media/signs/asl/phrases/Saturday.mp4",
+      "generated": false
+    },
+    "sunday": {
+      "type": "video",
+      "path": "media/signs/asl/phrases/Sunday.mp4",
+      "generated": false
+    }
+  }
+}
