@@ -1502,6 +1502,5 @@ While currently rule-based, could add:
 | **Days of Week** | 7 | 7 | 7 |
 | **Total Signs** | 58 | 58 | 58 |
 
----
 
 **Made with ❤️ for the deaf and hard-of-hearing community**
