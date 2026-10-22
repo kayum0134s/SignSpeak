@@ -9,9 +9,11 @@ import shutil
 from pathlib import Path
 
 # Paths
-PROJECT_ROOT = Path(__file__).parent
+PROJECT_ROOT = Path(__file__).resolve().parent.parent if Path(__file__).resolve().parent.name == "scripts" else Path(__file__).resolve().parent
 EXTRACTED_PATH = PROJECT_ROOT / "media" / "extracted"
-ASL_PHRASES_PATH = PROJECT_ROOT / "media" / "signs" / "asl" / "phrases"
+if not EXTRACTED_PATH.exists():
+    EXTRACTED_PATH = PROJECT_ROOT / "frontend" / "public" / "media" / "extracted"
+ASL_PHRASES_PATH = PROJECT_ROOT / "frontend" / "public" / "media" / "signs" / "asl" / "phrases"
 SIGN_MAPPING_FILE = PROJECT_ROOT / "data" / "sign-mapping.json"
 
 def move_videos_to_phrases():

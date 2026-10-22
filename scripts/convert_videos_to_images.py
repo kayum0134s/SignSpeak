@@ -8,9 +8,13 @@ import os
 from pathlib import Path
 
 # Paths
-EXTRACTED_PATH = Path("media/extracted")
-ASL_PHRASES_PATH = Path("media/signs/asl/phrases")
-ISL_PHRASES_PATH = Path("media/signs/isl/phrases")
+PROJECT_ROOT = Path(__file__).resolve().parent.parent if Path(__file__).resolve().parent.name == "scripts" else Path(__file__).resolve().parent
+EXTRACTED_PATH = PROJECT_ROOT / "media" / "extracted"
+if not EXTRACTED_PATH.exists():
+    EXTRACTED_PATH = PROJECT_ROOT / "frontend" / "public" / "media" / "extracted"
+
+ASL_PHRASES_PATH = PROJECT_ROOT / "frontend" / "public" / "media" / "signs" / "asl" / "phrases"
+ISL_PHRASES_PATH = PROJECT_ROOT / "frontend" / "public" / "media" / "signs" / "isl" / "phrases"
 
 # Create directories
 ASL_PHRASES_PATH.mkdir(parents=True, exist_ok=True)

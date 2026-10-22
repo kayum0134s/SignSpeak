@@ -1,11 +1,12 @@
 /**
- * Text Processor Module
- * Handles text normalization, tokenization, and preparation for sign translation
+ * Text Processor Utility Module
+ * Handles text normalization, contraction expansion, Hindi transliteration,
+ * and greedy longest-match tokenization for sign translation.
  */
 
-class TextProcessor {
+export class TextProcessor {
     constructor() {
-        // Common contractions to expand
+        // Common English contractions to expand deterministically
         this.contractions = {
             "i'm": "i am",
             "you're": "you are",
@@ -33,7 +34,7 @@ class TextProcessor {
             "mustn't": "must not"
         };
 
-        // Common multi-word phrases that map to single signs
+        // Multi-word phrases mapping to single sign demonstrations
         this.commonPhrases = [
             "how are you",
             "thank you",
@@ -57,7 +58,7 @@ class TextProcessor {
             "what are you doing"
         ];
 
-        // Hindi/Indian phrases for ISL (maps to English equivalents)
+        // Hindi/Indian phrases for ISL (maps transliterated idioms to English equivalents)
         this.hindiPhrases = {
             "aapka naam kya hai": "what is your name",
             "aapka naam kya he": "what is your name",
@@ -85,9 +86,9 @@ class TextProcessor {
     }
 
     /**
-     * Main processing function
+     * Main processing pipeline
      * @param {string} text - Raw input text
-     * @returns {object} - Processed text with tokens
+     * @returns {object} - Processed text with structured tokens
      */
     process(text) {
         if (!text || typeof text !== 'string') {
@@ -98,117 +99,112 @@ class TextProcessor {
         let processed = this.clean(text);
         processed = this.expandContractions(processed);
 
-        // Tokenize with phrase detection
+        // Check for Hindi phrase mappings
+        processed = this.translateHindiPhrases(processed);
+
+        // Tokenize into phrases, words, and letter fallbacks
         const tokens = this.tokenize(processed);
 
         return {
-            tokens: tokens,
             original: text,
-            processed: processed
+            normalized: processed,
+            tokens: tokens
         };
     }
 
     /**
-     * Clean and normalize text
+     * Clean and normalize raw text input
      * @param {string} text
      * @returns {string}
      */
     clean(text) {
-        // Convert to lowercase
-        text = text.toLowerCase();
-
-        // Remove extra whitespace
-        text = text.replace(/\s+/g, ' ').trim();
-
-        // Remove special characters but keep letters, numbers, spaces, and basic punctuation
-        // Also support Hindi/Devanagari characters (Unicode range)
-        text = text.replace(/[^a-z0-9\s.,!?'\u0900-\u097F-]/g, '');
-
-        return text;
+        return text
+            .toLowerCase()
+            .trim()
+            // Keep letters, numbers, spaces, and Hindi Devanagari characters
+            .replace(/[^\w\s\u0900-\u097F']/g, '')
+            .replace(/\s+/g, ' ');
     }
 
     /**
-     * Expand contractions
+     * Expand common English contractions
      * @param {string} text
      * @returns {string}
      */
     expandContractions(text) {
         let expanded = text;
-
         for (const [contraction, expansion] of Object.entries(this.contractions)) {
             const regex = new RegExp(`\\b${contraction}\\b`, 'gi');
             expanded = expanded.replace(regex, expansion);
         }
-
         return expanded;
     }
 
     /**
-     * Tokenize text with phrase detection
+     * Translate Hindi transliterations to semantic English equivalents
      * @param {string} text
-     * @returns {array} - Array of tokens (words or phrases)
+     * @returns {string}
+     */
+    translateHindiPhrases(text) {
+        let translated = text;
+        for (const [hindi, english] of Object.entries(this.hindiPhrases)) {
+            const regex = new RegExp(`\\b${hindi}\\b`, 'gi');
+            translated = translated.replace(regex, english);
+        }
+        return translated;
+    }
+
+    /**
+     * Greedy longest-match tokenization algorithm
+     * Priority: Multi-word phrases first -> Words -> Letters
+     * @param {string} text
+     * @returns {Array<object>}
      */
     tokenize(text) {
         const tokens = [];
-        let remaining = text;
+        const words = text.split(' ').filter(w => w.length > 0);
+        let i = 0;
 
-        // First, check for Hindi phrases and convert to English equivalents
-        for (const [hindiPhrase, englishPhrase] of Object.entries(this.hindiPhrases)) {
-            if (remaining.includes(hindiPhrase)) {
-                remaining = remaining.replace(hindiPhrase, englishPhrase);
-            }
-        }
+        // Sort common phrases by word count (longest phrase first)
+        const sortedPhrases = [...this.commonPhrases].sort(
+            (a, b) => b.split(' ').length - a.split(' ').length
+        );
 
-        // Now process with standard English phrase detection
-        while (remaining.length > 0) {
+        while (i < words.length) {
             let matched = false;
 
-            // Sort phrases by length (longest first) for better matching
-            const sortedPhrases = this.commonPhrases.sort((a, b) => b.length - a.length);
-
+            // Greedy check for multi-word phrases starting at index i
             for (const phrase of sortedPhrases) {
-                if (remaining.startsWith(phrase)) {
-                    tokens.push({
-                        type: 'phrase',
-                        value: phrase,
-                        words: phrase.split(' ')
-                    });
-                    remaining = remaining.slice(phrase.length).trim();
-                    matched = true;
-                    break;
+                const phraseWords = phrase.split(' ');
+                const phraseLength = phraseWords.length;
+
+                if (i + phraseLength <= words.length) {
+                    const candidate = words.slice(i, i + phraseLength).join(' ');
+
+                    if (candidate === phrase) {
+                        tokens.push({
+                            type: 'phrase',
+                            value: phrase,
+                            words: phraseWords
+                        });
+                        i += phraseLength;
+                        matched = true;
+                        break;
+                    }
                 }
             }
 
-            // If no phrase matched, take the next word
+            // If no phrase matched, emit word token
             if (!matched) {
-                const match = remaining.match(/^([a-z0-9\u0900-\u097F'-]+)/);
-                if (match) {
-                    const word = match[1];
-                    tokens.push({
-                        type: 'word',
-                        value: word
-                    });
-                    remaining = remaining.slice(word.length).trim();
-                } else {
-                    // Skip punctuation or unknown characters
-                    remaining = remaining.slice(1).trim();
-                }
+                tokens.push({
+                    type: 'word',
+                    value: words[i]
+                });
+                i++;
             }
         }
 
         return tokens;
-    }
-
-    /**
-     * Split text into sentences
-     * @param {string} text
-     * @returns {array}
-     */
-    splitSentences(text) {
-        return text
-            .split(/[.!?]+/)
-            .map(s => s.trim())
-            .filter(s => s.length > 0);
     }
 }
 

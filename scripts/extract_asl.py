@@ -10,10 +10,10 @@ from pathlib import Path
 import os
 
 # Configuration
-PROJECT_ROOT = Path(__file__).parent
+PROJECT_ROOT = Path(__file__).resolve().parent.parent if Path(__file__).resolve().parent.name == "scripts" else Path(__file__).resolve().parent
 TEMP_EXTRACT = PROJECT_ROOT / "temp_asl_extract"
-ASL_ALPHABET_DIR = PROJECT_ROOT / "media" / "signs" / "asl" / "alphabet"
-ASL_COMMON_DIR = PROJECT_ROOT / "media" / "signs" / "asl" / "common"
+ASL_ALPHABET_DIR = PROJECT_ROOT / "frontend" / "public" / "media" / "signs" / "asl" / "alphabet"
+ASL_COMMON_DIR = PROJECT_ROOT / "frontend" / "public" / "media" / "signs" / "asl" / "common"
 SIGN_MAPPING_FILE = PROJECT_ROOT / "data" / "sign-mapping.json"
 
 def find_asl_zip():

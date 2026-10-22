@@ -9,9 +9,9 @@ from pathlib import Path
 import json
 
 # Configuration
-PROJECT_ROOT = Path(__file__).parent
+PROJECT_ROOT = Path(__file__).resolve().parent.parent if Path(__file__).resolve().parent.name == "scripts" else Path(__file__).resolve().parent
 DATASET_SOURCE = PROJECT_ROOT / "temp_dataset"  # Place your extracted dataset here
-MEDIA_ROOT = PROJECT_ROOT / "media" / "signs" / "asl"
+MEDIA_ROOT = PROJECT_ROOT / "frontend" / "public" / "media" / "signs" / "asl"
 SIGN_MAPPING_FILE = PROJECT_ROOT / "data" / "sign-mapping.json"
 
 # Create necessary directories

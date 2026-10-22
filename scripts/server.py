@@ -30,9 +30,10 @@ class MyHttpRequestHandler(http.server.SimpleHTTPRequestHandler):
         return super().do_GET()
 
 def main():
-    # Change to script directory
-    script_dir = Path(__file__).parent
-    os.chdir(script_dir)
+    # Resolve frontend directory
+    project_root = Path(__file__).resolve().parent.parent
+    frontend_dir = project_root / "frontend"
+    os.chdir(frontend_dir)
     
     # Create server
     handler = MyHttpRequestHandler
@@ -44,7 +45,7 @@ def main():
         print("🤟 SignSpeak Server Started!")
         print("=" * 60)
         print(f"Server running at: {url}")
-        print(f"Directory: {script_dir}")
+        print(f"Directory: {frontend_dir}")
         print("\nPress Ctrl+C to stop the server")
         print("=" * 60)
         

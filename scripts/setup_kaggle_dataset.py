@@ -10,13 +10,13 @@ from pathlib import Path
 from collections import defaultdict
 
 # Configuration
-PROJECT_ROOT = Path(__file__).parent
+PROJECT_ROOT = Path(__file__).resolve().parent.parent if Path(__file__).resolve().parent.name == "scripts" else Path(__file__).resolve().parent
 DATASET_ZIP_NAME = "asl_alphabet.zip"  # or "archive.zip" - Kaggle's default name
 DATASET_ZIP_PATH = PROJECT_ROOT / DATASET_ZIP_NAME
 TEMP_EXTRACT = PROJECT_ROOT / "temp_kaggle_extract"
-ASL_ALPHABET_DIR = PROJECT_ROOT / "media" / "signs" / "asl" / "alphabet"
-ASL_NUMBERS_DIR = PROJECT_ROOT / "media" / "signs" / "asl" / "numbers"
-ASL_COMMON_DIR = PROJECT_ROOT / "media" / "signs" / "asl" / "common"
+ASL_ALPHABET_DIR = PROJECT_ROOT / "frontend" / "public" / "media" / "signs" / "asl" / "alphabet"
+ASL_NUMBERS_DIR = PROJECT_ROOT / "frontend" / "public" / "media" / "signs" / "asl" / "numbers"
+ASL_COMMON_DIR = PROJECT_ROOT / "frontend" / "public" / "media" / "signs" / "asl" / "common"
 SIGN_MAPPING_FILE = PROJECT_ROOT / "data" / "sign-mapping.json"
 
 def find_dataset_zip():

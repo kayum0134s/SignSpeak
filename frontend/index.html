@@ -7,7 +7,7 @@
     <title>SignSpeak - Speech/Text to Sign Language</title>
     <meta name="description"
         content="Convert speech or text into sign language videos and images supporting ASL and ISL">
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="assets/css/styles.css">
 </head>
 
 <body>
@@ -98,7 +98,7 @@
                 <!-- Image Gallery View -->
                 <div id="galleryView" class="gallery-view hidden">
                     <div class="gallery-grid" id="galleryGrid">
-                        <!-- Dynamic sign images will be inserted here -->
+                        <!-- Dynamic sign cards will be rendered here -->
                     </div>
                 </div>
 
@@ -118,6 +118,7 @@
                         <button id="pauseBtn" class="control-btn">
                             <span>⏸️</span> Pause
                         </button>
+
                         <div class="speed-control">
                             <label for="speedSlider">Speed:</label>
                             <input type="range" id="speedSlider" min="0.5" max="2" step="0.25" value="1">
@@ -159,18 +160,18 @@
                 <h3>✨ Features</h3>
                 <ul class="feature-list">
                     <li>🎤 <strong>Voice Input:</strong> Speak naturally and convert to sign language</li>
-                    <li>⌨️ <strong>Text Input:</strong> Type in English or Hindi</li>
-                    <li>🇺🇸 <strong>ASL Support:</strong> American Sign Language with alphabet images</li>
+                    <li>⌨️ <strong>Text Input:</strong> Type in English or Hindi transliteration</li>
+                    <li>🇺🇸 <strong>ASL Support:</strong> American Sign Language with alphabet images and phrase clips</li>
                     <li>🇮🇳 <strong>ISL Support:</strong> Indian Sign Language with Hindi phrase recognition</li>
-                    <li>🖼️ <strong>Gallery Mode:</strong> View signs as image cards</li>
-                    <li>🎬 <strong>Video Mode:</strong> Watch sign language videos</li>
+                    <li>🖼️ <strong>Gallery Mode:</strong> View signs as sequential image cards</li>
+                    <li>🎬 <strong>Video Mode:</strong> Watch continuous sign language videos with speed controls</li>
                     <li>📝 <strong>Fingerspelling:</strong> Automatic letter-by-letter spelling for unknown words</li>
                 </ul>
 
                 <h3>🌐 Supported Languages</h3>
                 <ul class="language-list">
-                    <li><strong>English:</strong> Full alphabet, common words, and phrases</li>
-                    <li><strong>Hindi:</strong> 20+ common phrases (namaste, shukriya, etc.)</li>
+                    <li><strong>English:</strong> Full alphabet, common words, and daily phrases</li>
+                    <li><strong>Hindi:</strong> 20+ common phrases (namaste, shukriya, aap kaise hain, etc.)</li>
                 </ul>
 
                 <h3>📚 How to Use</h3>
@@ -183,20 +184,20 @@
 
                 <h3>🎯 Technology</h3>
                 <p class="tech-stack">
-                    Built with vanilla JavaScript, HTML5, and CSS3. Features speech recognition,
-                    text processing, and multimedia playback capabilities.
+                    Built with modern modular JavaScript (ES6+), HTML5, and CSS3, backed by a FastAPI microservice.
+                    Operates deterministically with zero heavy LLM/ML dependencies and features 100% offline fallback.
                 </p>
 
                 <div class="modal-footer">
                     <p>💙 Made with passion for accessibility and inclusion</p>
-                    <p class="version">Version 1.0</p>
+                    <p class="version">Version 2.0</p>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Scripts -->
-    <script type="module" src="js/app.js"></script>
+    <!-- Application Script -->
+    <script type="module" src="assets/js/app.js"></script>
 </body>
 
 </html>
