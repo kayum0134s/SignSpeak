@@ -1,0 +1,5 @@
+{
+  "isolated_sign": "asl_isolated_baseline",
+  "continuous_gloss": "asl_continuous_baseline",
+  "sentence_translation": "asl_translation_baseline"
+}

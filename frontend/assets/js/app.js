@@ -1,22 +1,28 @@
 /**
  * Main Application Orchestrator
- * Coordinates UI inputs, Speech Recognition, API Services, and Media Playback.
+ * Coordinates UI tabs, Live Webcam Recognition, Model Training Dashboard,
+ * Speech Recognition, API Services, and Media Playback.
  */
 
 import { SpeechRecognitionHandler } from './components/speechRecognition.js';
 import { MediaPlayer } from './components/mediaPlayer.js';
 import { ApiService } from './services/apiService.js';
 import { CONFIG } from './utils/config.js';
+import { WebcamRecognitionHandler } from './components/webcamRecognition.js';
+import { TrainingDashboardHandler } from './components/trainingDashboard.js';
 
 class App {
     constructor() {
         this.speechRecognition = new SpeechRecognitionHandler();
         this.apiService = new ApiService();
         this.mediaPlayer = new MediaPlayer();
+        this.webcamRecognition = new WebcamRecognitionHandler();
+        this.trainingDashboard = new TrainingDashboardHandler();
 
         this.currentLanguage = CONFIG.DEFAULT_LANGUAGE;
         this.currentMode = CONFIG.DEFAULT_MODE;
         this.isProcessing = false;
+        this.activeTab = 'webcam';
 
         this.init();
     }
@@ -54,10 +60,11 @@ class App {
             modeToggles: document.querySelectorAll('.mode-btn'),
             aboutBtn: document.getElementById('aboutBtn'),
             aboutModal: document.getElementById('aboutModal'),
-            modalClose: document.querySelector('.modal-close')
+            modalClose: document.querySelector('.modal-close'),
+            navTabs: document.querySelectorAll('.nav-tab')
         };
 
-        // Initialize Media Player component
+        // Initialize Media Player component (Deterministic Playback)
         this.mediaPlayer.init({
             galleryGrid: this.elements.galleryGrid,
             videoPlayer: this.elements.signVideo,
@@ -66,8 +73,44 @@ class App {
             outputDisplay: this.elements.outputDisplay
         });
 
+        // Initialize Live Webcam Recognition Component
+        this.webcamRecognition.init();
+
+        // Initialize Model Training & Registry Dashboard
+        this.trainingDashboard.init();
+
+        this.setupTabNavigation();
         this.setupEventListeners();
         this.setupSpeechRecognition();
+    }
+
+    setupTabNavigation() {
+        if (!this.elements.navTabs) return;
+
+        this.elements.navTabs.forEach(tabBtn => {
+            tabBtn.addEventListener('click', (e) => {
+                const targetTab = e.currentTarget.dataset.tab;
+                if (!targetTab) return;
+
+                // Update active tab buttons
+                this.elements.navTabs.forEach(b => b.classList.remove('active'));
+                e.currentTarget.classList.add('active');
+
+                // Switch views
+                document.querySelectorAll('.view-panel').forEach(panel => {
+                    panel.classList.add('hidden');
+                    panel.classList.remove('active');
+                });
+
+                const activePanel = document.getElementById(`tab-${targetTab}`);
+                if (activePanel) {
+                    activePanel.classList.remove('hidden');
+                    activePanel.classList.add('active');
+                }
+
+                this.activeTab = targetTab;
+            });
+        });
     }
 
     setupEventListeners() {

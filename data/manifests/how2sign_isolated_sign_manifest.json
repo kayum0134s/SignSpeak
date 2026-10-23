@@ -1,0 +1,15 @@
+{
+  "manifest_version": "1.0.0",
+  "dataset_name": "How2Sign",
+  "dataset_version": "v1.0",
+  "sign_language": "ASL",
+  "task": "isolated_sign",
+  "created_at": "2026-10-23T17:52:29.229884+00:00",
+  "splits": {},
+  "total_samples": 0,
+  "label_vocab": [],
+  "license_info": "CC BY-NC-SA 4.0 (Non-Commercial, Academic Use Only)",
+  "attribution": "Duarte et al., CVPR 2021 - How2Sign dataset",
+  "samples": [],
+  "metadata": {}
+}

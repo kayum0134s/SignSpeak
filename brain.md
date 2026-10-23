@@ -530,3 +530,60 @@ Test coverage includes:
 - **Documentation Hub Index**: [docs/README.md](file:///c:/Users/hp/OneDrive/Desktop/1/SignSpeak/docs/README.md)
 - **User Guide & FAQs**: [README.md](file:///c:/Users/hp/OneDrive/Desktop/1/SignSpeak/README.md)
 
+---
+
+## 8. Extensible ASL Model Training & Recognition Platform (v2.1 Architecture)
+
+### 8.1 System Overview
+Upgrading SignSpeak from deterministic speech-to-sign playback to a dual-capability platform:
+1. **Continuous Real-Time Webcam ASL Recognition**: Live video landmark extraction (MediaPipe Holistic/Hands), temporal sequence classification, continuous gloss recognition, and sentence-level translation.
+2. **Modular Dataset & Training Pipeline**: Dataset-agnostic adapters (How2Sign, WLASL, MS-ASL, Custom), versioned manifests, configurable model training, checkpoint validation, evaluation metrics, and local model registry.
+3. **Training & Management Dashboard**: Web-based model selection, dataset inspection, training lifecycle monitoring, evaluation comparison, and deployment to the live webcam recognition interface.
+
+### 8.2 Hardware & Environment Baseline (Audited Phase 1)
+- **OS**: Windows 11 (win32)
+- **Python**: 3.11.9
+- **PyTorch**: 2.9.1+cpu (CUDA Available: False, optimized for CPU execution)
+- **MediaPipe**: 0.10.21 (real-time hand/pose landmark estimation)
+- **OpenCV**: 4.11.0
+- **FastAPI**: 0.104.1 / Uvicorn: 0.24.0 / Pydantic: 2.12.5
+- **System RAM**: 15.84 GB Total (~6.33 GB Free)
+- **Disk Space**: 68.6 GB Available
+- **Design Strategy**: Landmark-based temporal feature vectors (compact, sub-30ms CPU inference) with bounded sequence buffering and CTC / Seq2Seq decoders.
+
+### 8.3 Implementation Phase Tracker
+- [x] **Phase 1: Audit repository and hardware** (Clean working tree, 24/24 baseline tests pass, hardware capability mapped: 15.8GB RAM, PyTorch 2.9.1+cpu, MediaPipe 0.10.21, OpenCV 4.11.0).
+- [x] **Phase 2: Common dataset interface & custom dataset adapter** (Abstract `DatasetAdapter`, `NormalizedSample`, `DatasetManifest`, `ValidationReport`, `CustomDatasetAdapter` with directory, CSV, and JSON parsing).
+- [x] **Phase 3: Real dataset adapters (How2Sign, WLASL, MS-ASL)** (Official schemas, license verification, split preservation, signer leakage detection, 8 comprehensive tests passing).
+- [x] **Phase 4: Isolated-sign baseline & training/evaluation pipeline (Task A)** (LandmarkExtractor 144-dim, sequence resampling/normalization, Vocabulary, BiGRU-Attention IsolatedSignClassifier, IsolatedSignTrainer, ModelEvaluator, metrics with confusion matrix & latency).
+- [x] **Phase 5: Continuous gloss recognition (Task B) & sentence translation (Task C)** (ContinuousGlossRecognizer with PyTorch CTCLoss & greedy path decoding, ContinuousGlossTrainer, GlossToEnglishTranslator with ASL question-inversion and copula synthesis, SignTranslationPipeline, WER/BLEU/chrF metrics).
+- [x] **Phase 6: Model registry & task compatibility checks** (LocalModelRegistry, RegisteredModelInfo, SHA-256 checksum verification, CheckpointVerificationError, IncompatibleTaskError enforcement, default task configuration files).
+- [x] **Phase 7: Live webcam recognition & transcript streaming interface** (WebcamRecognitionHandler, bounded sliding buffer in RecognitionService, real-time landmark canvas overlay, partial and finalized transcripts, camera permission states, model selector).
+- [x] **Phase 8: Frontend dataset & model training dashboard** (TrainingDashboardHandler, validation cards, sample counts, train/val/test splits, signer leakage alerts, configurable hyperparameters, live terminal logs, model registry table, one-click deploy).
+- [x] **Phase 9: End-to-end integration tests & operational documentation** (52 automated tests passing, unified CLI `scripts/pipeline_cli.py`, updated PRD/TRD/README).
+
+### 8.4 ML Platform CLI Runbook
+```bash
+# 1. Inspect supported dataset adapter contracts
+python scripts/pipeline_cli.py inspect --dataset how2sign
+python scripts/pipeline_cli.py inspect --dataset wlasl
+python scripts/pipeline_cli.py inspect --dataset custom
+
+# 2. Validate a local dataset directory (without downloading heavy assets)
+python scripts/pipeline_cli.py validate --dataset custom --path data/
+
+# 3. Build a versioned manifest
+python scripts/pipeline_cli.py manifest --dataset custom --path data/ --output data/manifests/custom_isolated.json --task isolated_sign
+
+# 4. Train a model from a config file
+python scripts/pipeline_cli.py train --config ml/configs/task_a_isolated_default.json
+
+# 5. List registered models in local registry
+python scripts/pipeline_cli.py models
+
+# 6. Start full web application (FastAPI + Webcam UI + Training Dashboard)
+python -m uvicorn backend.app.main:app --host 127.0.0.1 --port 8000 --reload
+# Or via CLI:
+python scripts/pipeline_cli.py serve --port 8000
+```
+

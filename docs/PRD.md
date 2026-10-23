@@ -227,6 +227,19 @@ gantt
     Full ASL Grammar Parser (Time-Topic-Comment Syntax Reorder)  :2027-02, 2027-05
 ```
 
-- **Phase 1 (Current Release)**: Pure client-side baseline, voice/text input, greedy tokenization, ASL/ISL mappings, 13 video phrases, 26 alphabet images, HTML5 Canvas fallback.
-- **Phase 2 (Near Term)**: Progressive Web App (PWA) manifest and Service Worker for 100% offline playback of pre-cached video assets; expanded vocabulary covering 100+ daily conversational signs.
-- **Phase 3 (Long Term)**: Two-way communication using client-side WebAssembly / MediaPipe Hands to detect user gestures via webcam and translate sign gestures back into spoken audio/text.
+- **Phase 1 (Baselined)**: Pure client-side baseline, voice/text input, greedy tokenization, ASL/ISL mappings, 13 video phrases, 26 alphabet images, HTML5 Canvas fallback.
+- **Phase 2 (Completed)**: Extensible RESTful microservice backend with FastAPI, structured JSON schema validations, and automated end-to-end test suite.
+- **Phase 3 (v2.1 Baselined)**: Continuous webcam ASL recognition, sentence-level English translation, dataset adapters (How2Sign, WLASL, MS-ASL, Custom), training pipeline (Tasks A, B, C), and model registry dashboard.
+
+---
+
+## 11. Extensible ML Training & Continuous Recognition Platform (v2.1 Addendum)
+
+### 11.1 Functional Requirements Addendum
+- **FR-5.1 Live Webcam Ingestion**: High-framerate browser video capture with explicit user permissions, zero cloud recording, and sub-30ms landmark processing.
+- **FR-5.2 Task A: Isolated Sign Recognition**: Predicts discrete ASL words/letters from temporal sequences.
+- **FR-5.3 Task B: Continuous Gloss Recognition**: Decodes unaligned continuous signing into sequential glosses using PyTorch CTC Loss.
+- **FR-5.4 Task C: Sentence-Level Sign Translation**: Translates continuous ASL streams into grammatical English sentences (reordering ASL questions, synthesizing copulas and articles).
+- **FR-5.5 Common Dataset Adapters**: Exposes standardized adapter contracts for How2Sign, WLASL, MS-ASL, and Custom local datasets with signer leakage detection.
+- **FR-5.6 Local Model Registry**: SHA-256 verified checkpoint management, task compatibility assertions, and one-click deployment to webcam inference.
+- **FR-5.7 Model Training Dashboard**: Interactive browser console for dataset validation, sample statistics, configurable training jobs with live terminal logs, and model comparison.

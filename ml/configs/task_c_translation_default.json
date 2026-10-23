@@ -1,0 +1,24 @@
+{
+  "task": "sentence_translation",
+  "model_id": "asl_sentence_translation_v1",
+  "dataset_adapter": "how2sign",
+  "manifest_path": "data/manifests/how2sign_translation_manifest.json",
+  "checkpoint_dir": "checkpoints/task_c",
+  "model_architecture": "GlossRecognizer_Translation_Pipeline",
+  "input_dim": 144,
+  "sequence_length": 60,
+  "hidden_dim": 128,
+  "num_layers": 2,
+  "dropout": 0.3,
+  "batch_size": 8,
+  "epochs": 20,
+  "learning_rate": 0.0008,
+  "weight_decay": 0.0001,
+  "patience": 6,
+  "random_seed": 42,
+  "device": "cpu",
+  "metadata": {
+    "description": "Default configuration for Task C (Sentence-Level ASL to English Translation)",
+    "sign_language": "ASL"
+  }
+}

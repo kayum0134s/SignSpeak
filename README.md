@@ -1,43 +1,28 @@
-# 🤟 SignSpeak — Speech/Text to Sign Language System
+# 🤟 SignSpeak — Extensible ASL Recognition & Model Training Platform
 
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.104+-009688.svg?logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com)
-[![Python](https://img.shields.io/badge/Python-3.8+-3776AB.svg?logo=python&logoColor=white)](https://www.python.org/)
-[![JavaScript](https://img.shields.io/badge/ES6+-Vanilla_JS-F7DF1E.svg?logo=javascript&logoColor=black)](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
-[![Tests](https://img.shields.io/badge/Tests-24_Passed-success.svg)](#-automated-testing)
+[![PyTorch](https://img.shields.io/badge/PyTorch-2.0+-EE4C2C.svg?logo=pytorch&logoColor=white)](https://pytorch.org/)
+[![MediaPipe](https://img.shields.io/badge/MediaPipe-0.10+-00C7B7.svg?logo=google&logoColor=white)](https://mediapipe.dev/)
+[![Python](https://img.shields.io/badge/Python-3.11+-3776AB.svg?logo=python&logoColor=white)](https://www.python.org/)
+[![Tests](https://img.shields.io/badge/Tests-52_Passed-success.svg)](#-automated-testing)
 [![License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
-An accessible, real-time web application and microservice that converts spoken speech or typed text into American Sign Language (ASL) and Indian Sign Language (ISL) visual demonstrations (MP4 videos and image sequences).
-
-Operates with **zero external machine learning bloat, zero heavy LLM latency, and zero user data transmission**, guaranteeing instant, deterministic, and privacy-preserving accessibility.
+**SignSpeak** is a webcam-based continuous American Sign Language (ASL) recognition and sentence-level English translation platform equipped with a reusable ML training pipeline capable of training, evaluating, and managing models across multiple compatible datasets (How2Sign, WLASL, MS-ASL, and local custom datasets).
 
 ---
 
-## 📑 Table of Contents
-- [Core Features](#-core-features)
-- [System Architecture](#-system-architecture)
-- [Target Project Structure](#-target-project-structure)
-- [Quick Start & Setup](#-quick-start--setup)
-  - [Option A: FastAPI Backend Server (Recommended)](#option-a-fastapi-backend-server-recommended)
-  - [Option B: Standalone Offline Frontend](#option-b-standalone-offline-frontend-zero-backend)
-- [REST API Reference](#-rest-api-reference)
-- [Automated Testing](#-automated-testing)
-- [Sign Language Media Coverage](#-sign-language-media-coverage)
-- [Documentation Index](#-documentation-index)
+## ✨ Core Platform Capabilities
 
----
-
-## ✨ Core Features
-
-- 🎤 **Voice & Speech Recognition**: Integrates native browser Web Speech API (`SpeechRecognition`) for instant, private voice-to-text without cloud API fees.
-- ⌨️ **Bilingual Text Input**: Supports standard English alongside Romanized Hindi conversational transliteration (e.g., *"namaste"*, *"aapka naam kya hai"*).
-- 🇺🇸 **ASL & 🇮🇳 ISL Support**: Seamless toggle between American Sign Language and Indian Sign Language vocabularies.
-- 🎬 **Dual Presentation Modes**:
-  - **Video Mode**: Continuous, automated sequential playlist playback of high-definition demonstration clips with adjustable speed controls (`0.5x` to `2.0x`).
-  - **Gallery Mode**: Responsive, accessible card grid displaying tokens in sentence order for step-by-step study.
-- 📝 **Fingerspelling Cascade**: Unmapped words automatically decompose into letter-by-letter alphabet signs (A–Z).
-- 🎨 **HTML5 Canvas Dynamic Fallback**: Missing media assets automatically render synthesized canvas badges on the fly.
-- 🔒 **Absolute Privacy & Zero Latency**: Deterministic rule-based processing executing in under 50ms with zero cloud tracking.
-- 🔌 **100% Offline Failover**: Frontend seamlessly fails over to autonomous client-side translation if the backend is offline.
+- 📹 **Live Webcam ASL Recognition**: Real-time continuous sign recognition with landmark tracking (MediaPipe 144-dim hand & pose features), displaying partial and accumulated sentence transcripts directly from your webcam.
+- 🔤 **Sentence-Level English Translation**: Translates continuous signing into fluent, grammatical English sentences (Task C), adjusting for ASL wh-question inversion and synthesizing omitted copulas/articles.
+- 🔄 **Extensible Dataset Adapters**: Standardized adapter contracts for **How2Sign** (continuous ASL & translation), **WLASL** (word-level isolated), **MS-ASL**, and **Custom** local directories with signer-leakage detection.
+- ⚙️ **Configurable Training Pipeline**: Pydantic-validated configuration schema with PyTorch trainers for:
+  - **Task A**: Isolated Sign Classification (BiGRU-Attention)
+  - **Task B**: Continuous Gloss Recognition (BiGRU with PyTorch CTCLoss)
+  - **Task C**: Sentence-Level Sign-to-English Translation Pipeline
+- 🏛️ **Local Model Registry**: Manages registered model versions with SHA-256 checksum verification, task compatibility enforcement, and one-click deployment to webcam inference.
+- 🖥️ **Interactive Training Dashboard**: Browser dashboard for dataset validation, sample counts, train/val/test splits, real-time training progress, terminal log streaming, and model comparison.
+- 💬 **Speech/Text to Sign (Deterministic Playback)**: Preserves the original high-fidelity deterministic speech/text-to-sign visualizer with ASL/ISL dictionaries and speed controls.
 
 ---
 
@@ -80,59 +65,109 @@ graph LR
 ```
 SignSpeak/
 ├── frontend/
-│   ├── index.html                       # Semantic HTML5 user interface
-│   ├── assets/
-│   │   ├── css/
-│   │   │   └── styles.css               # Modern glassmorphic styling
-│   │   ├── js/
-│   │   │   ├── app.js                   # Application controller
-│   │   │   ├── components/              # UI components (mediaPlayer, speechRecognition, mediaGenerator)
-│   │   │   ├── services/                # apiService (with offline failover), signTranslator
-│   │   │   └── utils/                   # config, textProcessor
-│   │   └── images/                      # Static branding assets
-│   └── public/
-│       ├── data/                        # Client-accessible sign-mapping.json
-│       └── media/                       # Video & image demonstrations
-│           ├── extracted/               # 13 Master demonstration clips
-│           └── signs/asl/
-│               ├── alphabet/            # 26 Letters (A-Z)
-│               └── phrases/             # 13 Phrase MP4 clips
+│   ├── index.html                       # Semantic UI: Webcam, Dashboard, Playback
+│   └── assets/
+│       ├── css/styles.css               # Glassmorphic responsive styling
+│       └── js/
+│           ├── app.js                   # Main application coordinator
+│           ├── components/
+│           │   ├── webcamRecognition.js # Live webcam & real-time landmark inference
+│           │   ├── trainingDashboard.js # Dataset validation & training manager
+│           │   ├── mediaPlayer.js       # Video playlist & card presenter
+│           │   └── speechRecognition.js # Web Speech audio capture
+│           └── services/apiService.js   # Backend gateway & failover
 ├── backend/
 │   ├── app/
-│   │   ├── main.py                      # FastAPI application & static mounts
-│   │   ├── api/v1/                      # Health, translate, and signs endpoints
-│   │   ├── services/                    # text_processor, translator_service
-│   │   ├── models/                      # schemas.py (Pydantic models)
-│   │   └── utils/                       # config.py
-│   ├── tests/                           # Unit and API integration tests
-│   └── requirements.txt                 # FastAPI & Uvicorn dependencies
+│   │   ├── main.py                      # FastAPI app & static file mounts
+│   │   ├── api/v1/
+│   │   │   ├── recognition.py           # Real-time frame landmarks & transcripts
+│   │   │   ├── datasets.py              # Dataset discovery, validation & manifests
+│   │   │   ├── training.py              # Job runner & status monitoring
+│   │   │   ├── models.py                # Model registry listing & selection
+│   │   │   ├── evaluation.py            # Held-out benchmark evaluation
+│   │   │   ├── health.py                # System diagnostics
+│   │   │   ├── signs.py                 # Lexicon endpoints
+│   │   │   └── translate.py             # Deterministic NLP translation
+│   │   └── services/
+│   │       ├── recognition_service.py   # Bounded sliding buffer & inference engine
+│   │       ├── training_service.py      # Background worker with concurrency lock
+│   │       └── translator_service.py    # Rule-based sign resolver
+├── ml/
+│   ├── datasets/
+│   │   ├── base.py                      # Abstract DatasetAdapter & Manifest contracts
+│   │   ├── custom.py                    # Custom local dataset adapter
+│   │   ├── how2sign.py                  # How2Sign continuous ASL adapter
+│   │   ├── wlasl.py                     # WLASL word-level adapter
+│   │   └── ms_asl.py                    # MS-ASL isolated sign adapter
+│   ├── preprocessing/
+│   │   ├── landmarks.py                 # MediaPipe 144-dim hand & pose extractor
+│   │   ├── sequence.py                  # Normalization & temporal resampling
+│   │   └── vocabulary.py                # Vocabulary mapping & CTC special tokens
+│   ├── models/
+│   │   ├── isolated_classifier.py       # Task A: Spatial-Temporal BiGRU-Attention
+│   │   ├── continuous_seq2seq.py        # Task B: Temporal BiGRU + CTC Recognizer
+│   │   └── translation_pipeline.py      # Task C: Sign-to-English Translation Pipeline
+│   ├── training/
+│   │   ├── config.py                    # Pydantic v2 TrainingConfig
+│   │   └── trainer.py                   # IsolatedSignTrainer & ContinuousGlossTrainer
+│   ├── evaluation/
+│   │   ├── metrics.py                   # Accuracy, WER, BLEU-4, chrF, Latency
+│   │   └── evaluator.py                 # Checkpoint test-split evaluator
+│   └── registry/
+│       └── registry.py                  # LocalModelRegistry with SHA-256 verification
 ├── data/
-│   └── sign-mapping.json                # Master sign mapping registry (single source of truth)
+│   ├── manifests/                       # Generated dataset manifests
+│   └── sign-mapping.json                # Single source of truth sign mapping
 ├── scripts/
-│   ├── convert_videos_to_images.py      # Video frame extraction utility
-│   ├── extract_asl.py                   # Kaggle ASL Alphabet unpacker
-│   ├── organize_dataset.py              # Dataset normalization pipeline
-│   ├── organize_videos.py               # Video clip path synchronizer
-│   ├── server.py                        # Standalone Python dev host (zero dependencies)
-│   └── setup_kaggle_dataset.py          # Kaggle dataset setup utility
-├── docs/
-│   ├── PRD.md                           # Product Requirements Document
-│   ├── TRD.md                           # Technical Requirements Document
-│   ├── METHODOLOGY.md                   # Core Algorithmic & Data Flow Deep Dive
-│   └── README.md                        # Formal Documentation Index
+│   ├── pipeline_cli.py                  # Unified ML Pipeline Command Line Interface
+│   └── server.py                        # Standalone development server
 ├── tests/
-│   ├── __init__.py
-│   └── test_e2e.py                      # End-to-End System Integrity Tests
-├── pytest.ini                           # Pytest configuration
+│   ├── test_dataset_adapters.py         # Adapter & manifest tests
+│   ├── test_isolated_pipeline.py        # Task A classification & training tests
+│   ├── test_continuous_and_translation.py # Task B & C continuous recognition tests
+│   ├── test_model_registry.py           # Registry, checksum, & task check tests
+│   ├── test_api_v2.py                   # FastAPI ML endpoint integration tests
+│   └── test_e2e.py                      # End-to-End system integrity tests
 ├── brain.md                             # Master System Cognitive Blueprint
-├── .gitignore                           # Git ignore rules
-├── .env.example                         # Environment configuration template
-└── README.md                            # Project README
+└── README.md
 ```
 
 ---
 
-## 🚀 Quick Start & Setup
+## 🚀 Quick Start & CLI Runbook
+
+### Option A: Launch Full Platform (FastAPI + Webcam UI + Training Dashboard)
+```bash
+# 1. Install dependencies
+pip install -r backend/requirements.txt
+pip install opencv-python mediapipe torch
+
+# 2. Start the SignSpeak Platform server
+python scripts/pipeline_cli.py serve --port 8000
+# Or directly via uvicorn:
+python -m uvicorn backend.app.main:app --host 127.0.0.1 --port 8000 --reload
+```
+Open **`http://127.0.0.1:8000/`** in your browser.
+
+### Option B: CLI ML Workflow
+```bash
+# 1. Inspect supported datasets
+python scripts/pipeline_cli.py inspect --dataset how2sign
+python scripts/pipeline_cli.py inspect --dataset wlasl
+python scripts/pipeline_cli.py inspect --dataset custom
+
+# 2. Validate local dataset directory (without downloading heavy assets)
+python scripts/pipeline_cli.py validate --dataset custom --path data/
+
+# 3. Create versioned manifest
+python scripts/pipeline_cli.py manifest --dataset custom --path data/ --output data/manifests/custom_isolated.json --task isolated_sign
+
+# 4. Train a model from config
+python scripts/pipeline_cli.py train --config ml/configs/task_a_isolated_default.json
+
+# 5. List registered models
+python scripts/pipeline_cli.py models
+```
 
 ### Option A: FastAPI Backend Server (Recommended)
 

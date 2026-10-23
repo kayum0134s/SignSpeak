@@ -438,3 +438,50 @@ Because SignSpeak requires no server-side execution at runtime, it can be hosted
 - **GitHub Pages**: Set source to `/ (root)`.
 - **Vercel / Netlify**: Configure root directory with no build command (`buildCommand: none`, `publish: .`).
 - **Nginx / Apache**: Host files directly under `/var/www/html` with standard MIME type configuration for `.mp4` (`video/mp4`) and `.json` (`application/json`).
+
+---
+
+## 10. ML Subsystem Architecture & Dataset Pipeline (v2.1)
+
+### 10.1 Subsystem Blueprint
+```
+ml/
+├── datasets/
+│   ├── base.py                 # Abstract DatasetAdapter, NormalizedSample, ManifestItem
+│   ├── custom.py               # Custom local dataset adapter (class dirs, CSV, JSON)
+│   ├── how2sign.py             # How2Sign continuous ASL & sentence translation adapter
+│   ├── wlasl.py                # WLASL isolated-word adapter (subsets 100/300/1000/2000)
+│   └── ms_asl.py               # MS-ASL isolated sign adapter
+├── preprocessing/
+│   ├── landmarks.py            # MediaPipe 144-dim hand & pose feature extractor
+│   ├── sequence.py             # Coordinate centering, scale-normalization & resampling
+│   └── vocabulary.py           # Vocabulary mapping, CTC blank, <unk>, <pad>
+├── models/
+│   ├── base.py                 # BaseSignModel interface
+│   ├── isolated_classifier.py  # Task A: Spatial-Temporal BiGRU-Attention Classifier
+│   ├── continuous_seq2seq.py   # Task B: Temporal BiGRU + CTC Gloss Recognizer
+│   └── translation_pipeline.py # Task C: SignTranslationPipeline & GlossToEnglishTranslator
+├── training/
+│   ├── config.py               # Pydantic v2 TrainingConfig schema
+│   ├── trainer.py              # IsolatedSignTrainer & ContinuousGlossTrainer (CTCLoss)
+│   └── job_runner.py           # Single-concurrency asynchronous job runner
+├── evaluation/
+│   ├── metrics.py              # Top-1/5, Macro-F1, Confusion Matrix, WER, BLEU-4, chrF
+│   └── evaluator.py            # Independent test-split checkpoint evaluator
+└── registry/
+    └── registry.py             # LocalModelRegistry with SHA-256 verification & task contracts
+```
+
+### 10.2 REST API Specification (FastAPI v2.1)
+- `GET /api/v1/recognition/status`: Returns active model ID, current task, buffer frame count, readiness.
+- `POST /api/v1/recognition/process_frame`: Ingests 144-float landmark vector; updates partial/finalized transcripts.
+- `POST /api/v1/recognition/reset`: Clears transcript and sliding temporal buffer.
+- `GET /api/v1/datasets/adapters`: Lists supported adapters, licenses, and supported tasks.
+- `POST /api/v1/datasets/validate`: Validates local folder, detects signer leakage, reports valid counts.
+- `POST /api/v1/datasets/create_manifest`: Writes versioned manifest JSON to `data/manifests/`.
+- `POST /api/v1/training/start`: Validates `TrainingConfig` and starts background training thread.
+- `GET /api/v1/training/status`: Streams real-time training progress, loss, val accuracy, and logs.
+- `POST /api/v1/training/cancel`: Aborts running training job safely.
+- `GET /api/v1/models/`: Lists all registered models and active assignments.
+- `POST /api/v1/models/select`: Selects active model for webcam inference after task validation.
+- `POST /api/v1/evaluation/run`: Runs benchmark evaluation on test split and outputs structured report.

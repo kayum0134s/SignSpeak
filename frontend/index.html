@@ -4,139 +4,389 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SignSpeak - Speech/Text to Sign Language</title>
+    <title>SignSpeak — Continuous ASL Recognition & Model Training Platform</title>
     <meta name="description"
-        content="Convert speech or text into sign language videos and images supporting ASL and ISL">
+        content="Continuous webcam ASL recognition, sentence-level English translation, and extensible ML dataset training platform.">
     <link rel="stylesheet" href="assets/css/styles.css">
 </head>
 
 <body>
     <div class="container">
-        <!-- Header -->
+        <!-- Top App Navigation & Header -->
         <header class="header">
             <div class="header-content">
-                <h1 class="app-title">
-                    <span class="icon">🤟</span>
-                    SignSpeak
-                </h1>
-                <p class="app-subtitle">Transform Your Words into Sign Language</p>
-                <button id="aboutBtn" class="btn-about" title="About this project">ℹ️ About</button>
+                <div class="brand-group">
+                    <h1 class="app-title">
+                        <span class="icon">🤟</span>
+                        SignSpeak
+                    </h1>
+                    <span class="platform-badge">ML Platform v2.1</span>
+                </div>
+                <p class="app-subtitle">Continuous Webcam ASL Recognition & Extensible Dataset Training Platform</p>
+
+                <!-- Navigation Tabs -->
+                <nav class="app-nav-tabs">
+                    <button class="nav-tab active" data-tab="webcam">
+                        <span>📹</span> Live Webcam Recognition
+                    </button>
+                    <button class="nav-tab" data-tab="training">
+                        <span>⚡</span> Training & Model Dashboard
+                    </button>
+                    <button class="nav-tab" data-tab="playback">
+                        <span>💬</span> Speech/Text to Sign (Playback)
+                    </button>
+                    <button id="aboutBtn" class="btn-about" title="About this platform">ℹ️ About</button>
+                </nav>
             </div>
         </header>
 
-        <!-- Main Content -->
+        <!-- Main Content Views -->
         <main class="main-content">
-            <!-- Input Section -->
-            <section class="input-section card">
-                <h2 class="section-title">Input</h2>
 
-                <div class="input-controls">
-                    <textarea id="textInput" class="text-input"
-                        placeholder="Type your message here or use the microphone..." rows="4"></textarea>
+            <!-- ============================================================ -->
+            <!-- TAB 1: LIVE WEBCAM RECOGNITION (PRIMARY RECOGNITION PANEL)   -->
+            <!-- ============================================================ -->
+            <section id="tab-webcam" class="view-panel active card">
+                <div class="panel-header">
+                    <div class="panel-title-area">
+                        <h2 class="section-title">Live Webcam ASL Recognition</h2>
+                        <span id="activeTaskBadge" class="badge badge-info">Task A: Isolated Sign</span>
+                    </div>
 
-                    <div class="control-buttons">
-                        <button id="micBtn" class="btn btn-mic" title="Start voice input">
-                            <span class="mic-icon">🎤</span>
-                            <span class="btn-text">Voice Input</span>
-                        </button>
-
-                        <button id="translateBtn" class="btn btn-primary">
-                            <span class="btn-text">Translate to Signs</span>
-                            <span class="btn-icon">→</span>
-                        </button>
-
-                        <button id="clearBtn" class="btn btn-secondary">
-                            <span class="btn-text">Clear</span>
-                        </button>
+                    <div class="model-selection-bar">
+                        <label for="webcamModelSelect">Active Model:</label>
+                        <select id="webcamModelSelect" class="form-select">
+                            <option value="">Loading registered models...</option>
+                        </select>
+                        <span id="cameraStatusBadge" class="camera-status-badge disconnected">Camera Offline</span>
                     </div>
                 </div>
 
-                <!-- Speech Recognition Status -->
-                <div id="speechStatus" class="speech-status hidden">
-                    <div class="status-indicator pulsing"></div>
-                    <span class="status-text">Listening...</span>
-                </div>
-            </section>
-
-            <!-- Output Section -->
-            <section class="output-section card">
-                <div class="output-header">
-                    <h2 class="section-title">Sign Language Output</h2>
-
-                    <div class="controls-group">
-                        <!-- Language Toggle -->
-                        <div class="language-selector">
-                            <button class="toggle-btn active" data-lang="asl" title="American Sign Language">
-                                🇺🇸 ASL
-                            </button>
-                            <button class="toggle-btn" data-lang="isl" title="Indian Sign Language">
-                                🇮🇳 ISL
-                            </button>
+                <div class="webcam-layout-grid">
+                    <!-- Left: Camera Viewport -->
+                    <div class="webcam-viewport-card">
+                        <div class="video-canvas-wrapper">
+                            <video id="webcamVideo" class="webcam-video-feed" playsinline muted autoplay></video>
+                            <canvas id="webcamOverlay" class="webcam-overlay-canvas"></canvas>
+                            <div id="cameraPromptOverlay" class="camera-prompt-overlay hidden">
+                                <span class="camera-icon-large">📷</span>
+                                <p>Click <strong>Start Camera</strong> to begin real-time ASL recognition.</p>
+                            </div>
                         </div>
 
-                        <!-- Mode Toggle -->
-                        <div class="output-mode-selector">
-                            <button class="mode-btn" data-mode="gallery">
-                                <span>🖼️</span> Gallery
+                        <div class="camera-action-controls">
+                            <button id="startCameraBtn" class="btn btn-primary">
+                                <span>▶️</span> Start Camera
                             </button>
-                            <button class="mode-btn active" data-mode="video">
-                                <span>🎬</span> Video
+                            <button id="stopCameraBtn" class="btn btn-secondary" disabled>
+                                <span>⏹️</span> Stop Camera
+                            </button>
+                            <button id="clearTranscriptBtn" class="btn btn-secondary">
+                                <span>🗑️</span> Clear Transcript
+                            </button>
+                            <button id="copyTranscriptBtn" class="btn btn-outline">
+                                <span>📋</span> Copy Text
                             </button>
                         </div>
                     </div>
-                </div>
 
-                <!-- Output Display Area -->
-                <div id="outputDisplay" class="output-display">
-                    <div class="placeholder">
-                        <div class="placeholder-icon">✋</div>
-                        <p class="placeholder-text">Your sign language translation will appear here</p>
-                        <p class="placeholder-hint">Enter text or use voice input, then click "Translate to Signs"</p>
-                    </div>
-                </div>
+                    <!-- Right: Transcript & Model Metrics -->
+                    <div class="transcripts-card">
+                        <!-- Partial / In-Progress Transcript -->
+                        <div class="transcript-subpanel partial-box">
+                            <div class="subpanel-header">
+                                <span class="pulse-dot"></span>
+                                <h3>Live Predicted Sign (In-Progress)</h3>
+                            </div>
+                            <div id="partialTranscriptText" class="partial-text-display">—</div>
+                        </div>
 
-                <!-- Image Gallery View -->
-                <div id="galleryView" class="gallery-view hidden">
-                    <div class="gallery-grid" id="galleryGrid">
-                        <!-- Dynamic sign cards will be rendered here -->
-                    </div>
-                </div>
+                        <!-- Finalized Transcript -->
+                        <div class="transcript-subpanel finalized-box">
+                            <div class="subpanel-header">
+                                <h3>Accumulated Sentence Transcript</h3>
+                            </div>
+                            <div id="finalizedTranscriptText" class="finalized-text-display">
+                                Transcripts will accumulate here...
+                            </div>
+                        </div>
 
-                <!-- Video Player View -->
-                <div id="videoView" class="video-view hidden">
-                    <div class="video-container">
-                        <video id="signVideo" class="sign-video" controls>
-                            <source src="" type="video/mp4">
-                            Your browser does not support the video tag.
-                        </video>
-                    </div>
-
-                    <div class="video-controls">
-                        <button id="playBtn" class="control-btn">
-                            <span>▶️</span> Play
-                        </button>
-                        <button id="pauseBtn" class="control-btn">
-                            <span>⏸️</span> Pause
-                        </button>
-
-                        <div class="speed-control">
-                            <label for="speedSlider">Speed:</label>
-                            <input type="range" id="speedSlider" min="0.5" max="2" step="0.25" value="1">
-                            <span id="speedValue">1x</span>
+                        <!-- Confidence & Latency Gauges -->
+                        <div class="confidence-gauge-box">
+                            <div class="gauge-header">
+                                <span>Model Confidence:</span>
+                                <strong id="confidenceValueText">0%</strong>
+                            </div>
+                            <div class="confidence-bar-track">
+                                <div id="confidenceMeterFill" class="confidence-bar-fill" style="width: 0%;"></div>
+                            </div>
+                            <div class="metrics-footer">
+                                <span>Inference Latency: <strong id="latencyValueText">0 ms</strong> (CPU)</span>
+                                <span>Privacy: <strong>100% Local Vectors (No Video Stored)</strong></span>
+                            </div>
                         </div>
                     </div>
                 </div>
             </section>
 
-            <!-- Progress/Status Bar -->
-            <div id="statusBar" class="status-bar hidden">
-                <div class="status-content">
-                    <span id="statusText">Processing...</span>
-                    <div class="progress-bar">
-                        <div id="progressFill" class="progress-fill"></div>
+            <!-- ============================================================ -->
+            <!-- TAB 2: TRAINING & MODEL EVALUATION DASHBOARD                 -->
+            <!-- ============================================================ -->
+            <section id="tab-training" class="view-panel hidden card">
+                <div class="panel-header">
+                    <h2 class="section-title">ML Dataset Training & Model Registry</h2>
+                </div>
+
+                <!-- 3-Column Pipeline Architecture -->
+                <div class="dashboard-grid">
+                    <!-- Card 1: Dataset Inspection & Preparation -->
+                    <div class="dash-card">
+                        <div class="dash-card-header">
+                            <h3>1. Dataset Adapter & Validation</h3>
+                        </div>
+                        <div class="form-group">
+                            <label for="datasetAdapterSelect">Dataset Adapter:</label>
+                            <select id="datasetAdapterSelect" class="form-select">
+                                <option value="custom">Custom Local Dataset</option>
+                                <option value="how2sign">How2Sign (Continuous ASL / Translation)</option>
+                                <option value="wlasl">WLASL (Word-Level Isolated)</option>
+                                <option value="ms-asl">MS-ASL (Word-Level Isolated)</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="datasetPathInput">Local Dataset Directory:</label>
+                            <input type="text" id="datasetPathInput" class="form-input"
+                                placeholder="e.g. data/ or custom_asl_dataset" value="data/">
+                        </div>
+
+                        <div class="button-row">
+                            <button id="validateDatasetBtn" class="btn btn-secondary">
+                                🔍 Validate Dataset
+                            </button>
+                            <button id="createManifestBtn" class="btn btn-outline">
+                                📝 Build Manifest
+                            </button>
+                        </div>
+
+                        <!-- Validation Report Container -->
+                        <div id="datasetValidationResults" class="validation-container hidden"></div>
+                    </div>
+
+                    <!-- Card 2: Training Configuration & Execution -->
+                    <div class="dash-card">
+                        <div class="dash-card-header">
+                            <h3>2. Model Training Pipeline</h3>
+                            <span id="trainingJobStateBadge" class="status-pill idle">IDLE</span>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="trainTaskSelect">Training Task:</label>
+                            <select id="trainTaskSelect" class="form-select">
+                                <option value="isolated_sign">Task A: Isolated Sign Recognition</option>
+                                <option value="continuous_gloss">Task B: Continuous Gloss Recognition (CTC)</option>
+                                <option value="sentence_translation">Task C: Sentence-Level Sign Translation</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="trainModelIdInput">Model ID:</label>
+                            <input type="text" id="trainModelIdInput" class="form-input"
+                                placeholder="e.g. asl_model_v1" value="asl_custom_model_v1">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="trainManifestSelect">Dataset Manifest:</label>
+                            <select id="trainManifestSelect" class="form-select">
+                                <option value="">-- Select a Generated Manifest --</option>
+                            </select>
+                        </div>
+
+                        <div class="params-grid">
+                            <div class="form-group">
+                                <label for="trainEpochsInput">Epochs:</label>
+                                <input type="number" id="trainEpochsInput" class="form-input" value="10" min="1" max="100">
+                            </div>
+                            <div class="form-group">
+                                <label for="trainBatchSizeInput">Batch Size:</label>
+                                <input type="number" id="trainBatchSizeInput" class="form-input" value="16" min="1" max="128">
+                            </div>
+                            <div class="form-group">
+                                <label for="trainHiddenDimInput">Hidden Dim:</label>
+                                <input type="number" id="trainHiddenDimInput" class="form-input" value="128" min="16" max="512">
+                            </div>
+                            <div class="form-group">
+                                <label for="trainLrInput">Learning Rate:</label>
+                                <input type="number" id="trainLrInput" class="form-input" value="0.001" step="0.0005">
+                            </div>
+                        </div>
+
+                        <div class="button-row">
+                            <button id="startTrainingBtn" class="btn btn-primary">
+                                🚀 Start Training
+                            </button>
+                            <button id="cancelTrainingBtn" class="btn btn-danger" disabled>
+                                ⏹️ Cancel
+                            </button>
+                        </div>
+
+                        <!-- Live Progress & Metrics -->
+                        <div class="training-monitor">
+                            <div class="training-metrics-row">
+                                <span id="trainingEpochText">Epoch: 0 / 0</span>
+                                <span id="trainingLossText">Train Loss: 0.000 | Val Acc: 0.000</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div id="trainingProgressBarFill" class="progress-fill" style="width: 0%;"></div>
+                            </div>
+                            <!-- Terminal Logs -->
+                            <div id="trainingTerminalLogs" class="terminal-logs-window">Training logs will appear here in real-time...</div>
+                        </div>
                     </div>
                 </div>
-            </div>
+
+                <!-- Model Registry & Comparison Table -->
+                <div class="dash-card full-width">
+                    <div class="dash-card-header">
+                        <h3>Registered Models & Checkpoints</h3>
+                        <button id="refreshModelsBtn" class="btn btn-sm btn-outline">🔄 Refresh</button>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="models-table">
+                            <thead>
+                                <tr>
+                                    <th>Model ID</th>
+                                    <th>Task</th>
+                                    <th>Architecture</th>
+                                    <th>Classes</th>
+                                    <th>Checksum (SHA-256)</th>
+                                    <th>Evaluation Metrics</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="modelsTableBody">
+                                <tr><td colspan="7">Loading model registry...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ============================================================ -->
+            <!-- TAB 3: SPEECH/TEXT TO SIGN (DETERMINISTIC PLAYBACK)          -->
+            <!-- Preserved for full backward compatibility                    -->
+            <!-- ============================================================ -->
+            <section id="tab-playback" class="view-panel hidden">
+                <!-- Input Section -->
+                <div class="input-section card">
+                    <h2 class="section-title">Input</h2>
+
+                    <div class="input-controls">
+                        <textarea id="textInput" class="text-input"
+                            placeholder="Type your message here or use the microphone..." rows="4"></textarea>
+
+                        <div class="control-buttons">
+                            <button id="micBtn" class="btn btn-mic" title="Start voice input">
+                                <span class="mic-icon">🎤</span>
+                                <span class="btn-text">Voice Input</span>
+                            </button>
+
+                            <button id="translateBtn" class="btn btn-primary">
+                                <span class="btn-text">Translate to Signs</span>
+                                <span class="btn-icon">→</span>
+                            </button>
+
+                            <button id="clearBtn" class="btn btn-secondary">
+                                <span class="btn-text">Clear</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Speech Recognition Status -->
+                    <div id="speechStatus" class="speech-status hidden">
+                        <div class="status-indicator pulsing"></div>
+                        <span class="status-text">Listening...</span>
+                    </div>
+                </div>
+
+                <!-- Output Section -->
+                <div class="output-section card">
+                    <div class="output-header">
+                        <h2 class="section-title">Sign Language Output</h2>
+
+                        <div class="controls-group">
+                            <!-- Language Toggle -->
+                            <div class="language-selector">
+                                <button class="toggle-btn active" data-lang="asl" title="American Sign Language">
+                                    🇺🇸 ASL
+                                </button>
+                                <button class="toggle-btn" data-lang="isl" title="Indian Sign Language">
+                                    🇮🇳 ISL
+                                </button>
+                            </div>
+
+                            <!-- Mode Toggle -->
+                            <div class="output-mode-selector">
+                                <button class="mode-btn" data-mode="gallery">
+                                    <span>🖼️</span> Gallery
+                                </button>
+                                <button class="mode-btn active" data-mode="video">
+                                    <span>🎬</span> Video
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Output Display Area -->
+                    <div id="outputDisplay" class="output-display">
+                        <div class="placeholder">
+                            <div class="placeholder-icon">✋</div>
+                            <p class="placeholder-text">Your sign language translation will appear here</p>
+                            <p class="placeholder-hint">Enter text or use voice input, then click "Translate to Signs"</p>
+                        </div>
+                    </div>
+
+                    <!-- Image Gallery View -->
+                    <div id="galleryView" class="gallery-view hidden">
+                        <div class="gallery-grid" id="galleryGrid"></div>
+                    </div>
+
+                    <!-- Video Player View -->
+                    <div id="videoView" class="video-view hidden">
+                        <div class="video-container">
+                            <video id="signVideo" class="sign-video" controls>
+                                <source src="" type="video/mp4">
+                                Your browser does not support the video tag.
+                            </video>
+                        </div>
+
+                        <div class="video-controls">
+                            <button id="playBtn" class="control-btn">
+                                <span>▶️</span> Play
+                            </button>
+                            <button id="pauseBtn" class="control-btn">
+                                <span>⏸️</span> Pause
+                            </button>
+
+                            <div class="speed-control">
+                                <label for="speedSlider">Speed:</label>
+                                <input type="range" id="speedSlider" min="0.5" max="2" step="0.25" value="1">
+                                <span id="speedValue">1x</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Progress/Status Bar -->
+                <div id="statusBar" class="status-bar hidden">
+                    <div class="status-content">
+                        <span id="statusText">Processing...</span>
+                        <div class="progress-bar">
+                            <div id="progressFill" class="progress-fill"></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
         </main>
 
         <!-- Footer -->
@@ -149,54 +399,26 @@
     <div id="aboutModal" class="modal hidden">
         <div class="modal-content">
             <span class="modal-close">&times;</span>
-            <h2 class="modal-title">About SignSpeak</h2>
+            <h2 class="modal-title">About SignSpeak Platform</h2>
 
             <div class="modal-body">
                 <p class="modal-intro">
-                    <strong>SignSpeak</strong> is a bilingual sign language translator that converts speech and text
-                    into sign language animations and videos.
+                    <strong>SignSpeak</strong> is an extensible ASL model training platform and real-time webcam continuous sign recognition system.
                 </p>
 
-                <h3>✨ Features</h3>
-                <ul class="feature-list">
-                    <li>🎤 <strong>Voice Input:</strong> Speak naturally and convert to sign language</li>
-                    <li>⌨️ <strong>Text Input:</strong> Type in English or Hindi transliteration</li>
-                    <li>🇺🇸 <strong>ASL Support:</strong> American Sign Language with alphabet images and phrase clips</li>
-                    <li>🇮🇳 <strong>ISL Support:</strong> Indian Sign Language with Hindi phrase recognition</li>
-                    <li>🖼️ <strong>Gallery Mode:</strong> View signs as sequential image cards</li>
-                    <li>🎬 <strong>Video Mode:</strong> Watch continuous sign language videos with speed controls</li>
-                    <li>📝 <strong>Fingerspelling:</strong> Automatic letter-by-letter spelling for unknown words</li>
+                <h3>✨ Core Capabilities</h3>
+                <ul>
+                    <li><strong>Live Webcam Recognition:</strong> Real-time ASL continuous sign detection with partial & finalized transcripts.</li>
+                    <li><strong>Sentence-Level Translation:</strong> Continuous video landmark decoding into grammatical English sentences.</li>
+                    <li><strong>Reusable ML Pipeline:</strong> Common dataset adapter interfaces for How2Sign, WLASL, MS-ASL, and local Custom datasets.</li>
+                    <li><strong>Model Registry:</strong> SHA-256 verified checkpoints with task compatibility guarantees.</li>
+                    <li><strong>Deterministic Playback:</strong> Rule-based speech/text-to-sign visualizer with ASL/ISL dictionaries.</li>
                 </ul>
-
-                <h3>🌐 Supported Languages</h3>
-                <ul class="language-list">
-                    <li><strong>English:</strong> Full alphabet, common words, and daily phrases</li>
-                    <li><strong>Hindi:</strong> 20+ common phrases (namaste, shukriya, aap kaise hain, etc.)</li>
-                </ul>
-
-                <h3>📚 How to Use</h3>
-                <ol class="usage-list">
-                    <li>Select your preferred sign language (ASL or ISL)</li>
-                    <li>Enter text by typing or using voice input</li>
-                    <li>Click "Translate to Signs"</li>
-                    <li>Choose Gallery or Video mode to view the translation</li>
-                </ol>
-
-                <h3>🎯 Technology</h3>
-                <p class="tech-stack">
-                    Built with modern modular JavaScript (ES6+), HTML5, and CSS3, backed by a FastAPI microservice.
-                    Operates deterministically with zero heavy LLM/ML dependencies and features 100% offline fallback.
-                </p>
-
-                <div class="modal-footer">
-                    <p>💙 Made with passion for accessibility and inclusion</p>
-                    <p class="version">Version 2.0</p>
-                </div>
             </div>
         </div>
     </div>
 
-    <!-- Application Script -->
+    <!-- Application Bootstrap -->
     <script type="module" src="assets/js/app.js"></script>
 </body>
 
