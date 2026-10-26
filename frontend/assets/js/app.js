@@ -76,8 +76,10 @@ class App {
         // Initialize Live Webcam Recognition Component
         this.webcamRecognition.init();
 
-        // Initialize Model Training & Registry Dashboard
-        this.trainingDashboard.init();
+        // Initialize Model Training & Registry Dashboard if present
+        if (document.getElementById('tab-training')) {
+            this.trainingDashboard.init();
+        }
 
         this.setupTabNavigation();
         this.setupEventListeners();
